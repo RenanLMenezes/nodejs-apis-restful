@@ -1,6 +1,7 @@
 const { INSERT } = require('sequelize/types/lib/query-types')
 const Fornecedor = require('./fornecedor')
 const Modelo = require('./modeloTabelaFornecedor')
+const NaoEncontrado = requise('../../erros/NaoEncontrado.js')
 
 module.exports = {
     listar(){
@@ -17,7 +18,7 @@ module.exports = {
         })
 
         if(!encontrado){
-            throw new Error ('Fornecedor não encontrado')
+            throw new NaoEncontrado()
         }
 
         return encontrado
