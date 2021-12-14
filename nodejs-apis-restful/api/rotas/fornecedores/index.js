@@ -2,14 +2,16 @@ const roteador = require('express').Router()
 const tabelaFornecedor = require('./tabelaFornecedor.js')
 const Fornecedor = require('./fornecedor.js')
 const CampoInvalido = require('../../erros/CampoInvalido.js')
-
-
+const { SerializadorFornecedor } = require('../../serializador.js')
 
 roteador.get('/', async (req, res) => {
     const resultados = await tabelaFornecedor.listar()
     res.status(200)
+    const serializador = new SerializadorFornecedor(
+        res.getHeader('Content-Type')
+    )
     res.send(
-        JSON.stringify(resultados)
+        serializador.serealizar(res)
     )
 })
 
@@ -18,8 +20,11 @@ roteador.get("/:idFornecedor", async (req, res, proximo) => {
         const id = req.params.idFornecedor
         const fornecedor = new Fornecedor({ id: id })
         await fornecedor.carregar()
+        const serializador = new SerializadorFornecedor(
+            res.getHeader('Content-Type')
+        )
         res.send(
-            JSON.stringify(fornecedor)
+            serializador.serealizar(res)
         )
     } catch (erro){
         proximo(erro)
@@ -33,8 +38,11 @@ roteador.post('/', async (req, res, proximo) => {
         const fornecedor = new Fornecedor(dadosRecebidos)
         await fornecedor.criar()
         res.status(201)
+        const serializador = new SerializadorFornecedor(
+            res.getHeader('Content-Type')
+        )
         res.send(
-            JSON.stringify(resultados)
+            serializador.serealizar(res)
         )
     } catch (erro){
         proximo(erro)

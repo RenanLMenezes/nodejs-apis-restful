@@ -5,7 +5,7 @@ const NaoEncontrado = requise('../../erros/NaoEncontrado.js')
 
 module.exports = {
     listar(){
-        return Modelo.findAll()
+        return Modelo.findAll({ raw: true })
     },
     inserir(){
         return Modelo.create(fornecedor)
