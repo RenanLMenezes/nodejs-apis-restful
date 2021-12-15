@@ -7,7 +7,7 @@ const NaoEncontrado = require('./erros/NaoEncontrados.js')
 const CampoInvalido = require('./erros/CampoInvalido.js')
 const DadosNaoFornecidos = require('./erros/DadosNaoFornecidos.js')
 const ValorNaoSuportado = require('./erros/ValorNaoSuportado.js')
-const { formatos } = require('./serializador.js')
+const { formatos, SerializadorErro } = require('./serializador.js')
 
 
 
@@ -49,9 +49,12 @@ app.use((erro, req, res, proximo) =>{
         status = 406
     }
 
+    const serializador = new SerializadorErro(
+        res.getHeader('Content-Type')
+    )
     res.status(status)
     res.send(
-        JSON.stringify({
+        serializador.serealizar({
             mensagem: erro.mensage, 
             id: erro.idErro
         })
