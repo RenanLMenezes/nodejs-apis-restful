@@ -3,6 +3,7 @@ const tabelaFornecedor = require('./tabelaFornecedor.js')
 const Fornecedor = require('./fornecedor.js')
 const CampoInvalido = require('../../erros/CampoInvalido.js')
 const { SerializadorFornecedor } = require('../../serializador.js')
+const roteadorProdutos = require('./produtos/index.js')
 
 roteador.get('/', async (req, res) => {
     const resultados = await tabelaFornecedor.listar()
@@ -77,5 +78,7 @@ roteador.delete('/:idFornecedor', async (req, res, proximo) => {
         proximo(erro)
     }
 })
+
+roteador.use('/:idFornecedor/produtos', roteadorProdutos)
 
 module.exports = roteador

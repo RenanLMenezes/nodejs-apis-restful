@@ -1,5 +1,13 @@
-const ModeloTabela = require('../rotas/fornecedores/modeloTabelaFornecedor.js')
+const Modelos = [
+    require('../rotas/fornecedores/modeloTabelaFornecedor.js'),
+    require('../rotas/fornecedores/produtos/modeloTableProduto.js')
+]
 
-ModeloTabela
-    .sync()
-    .then(() => console.log('tabela criada'));
+async function criarTabelas () {
+    for (let i = 0; i < Modelos.length; i++){
+        const modelo = Modelos[i]
+        await modelo.sync()
+    }
+}
+
+criarTabelas()
